@@ -6,6 +6,7 @@
     <title>Register - Youdemy</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.15.10/dist/sweetalert2.min.css">
 </head>
 <body class="bg-gray-100">
 
@@ -28,29 +29,23 @@
     <div class="container mx-auto py-12 px-4">
         <div class="max-w-md mx-auto bg-white shadow-lg rounded-lg p-8">
             <h2 class="text-3xl font-bold text-gray-800 mb-6">Create an Account</h2>
-            <form>
+            <form method="POST">
                 <!-- Full Name -->
                 <div class="mb-6">
                     <label for="name" class="block text-gray-700 mb-2">Full Name</label>
-                    <input type="text" id="name" placeholder="Enter your full name" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500">
+                    <input type="text" name="name" id="name" placeholder="Enter your full name" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500">
                 </div>
 
                 <!-- Email -->
                 <div class="mb-6">
                     <label for="email" class="block text-gray-700 mb-2">Email</label>
-                    <input type="email" id="email" placeholder="Enter your email" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500">
+                    <input type="email" id="email" name="email" placeholder="Enter your email" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500">
                 </div>
-
+                
                 <!-- Password -->
                 <div class="mb-6">
                     <label for="password" class="block text-gray-700 mb-2">Password</label>
-                    <input type="password" id="password" placeholder="Enter your password" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500">
-                </div>
-
-                <!-- Confirm Password -->
-                <div class="mb-6">
-                    <label for="confirm-password" class="block text-gray-700 mb-2">Confirm Password</label>
-                    <input type="password" id="confirm-password" placeholder="Confirm your password" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500">
+                    <input type="password" name="pass" id="password" placeholder="Enter your password" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500">
                 </div>
 
                 <!-- Role Selection -->
@@ -62,14 +57,14 @@
                             <span class="ml-2 text-gray-700">Student</span>
                         </label>
                         <label class="flex items-center">
-                            <input type="radio" name="role" value="instructor" class="form-radio h-5 w-5 text-green-600 focus:ring-green-500">
-                            <span class="ml-2 text-gray-700">Instructor</span>
+                            <input type="radio" name="role" value="teacher" class="form-radio h-5 w-5 text-green-600 focus:ring-green-500">
+                            <span class="ml-2 text-gray-700">Teacher</span>
                         </label>
                     </div>
                 </div>
 
                 <!-- Submit Button -->
-                <button type="submit" class="w-full bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700">Sign Up</button>
+                <button type="submit" name="submit" class="w-full bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700">Sign Up</button>
 
                 <!-- Login Link -->
                 <p class="text-center text-gray-600 mt-4">
@@ -79,5 +74,52 @@
         </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.15.10/dist/sweetalert2.all.min.js"></script>
+
 </body>
 </html>
+<?php
+include_once '../config/database.php';
+include_once '../classes/User.php';
+include_once '../classes/userRepo.php';
+include_once '../classes/Student.php';
+try {
+    if(isset($_POST['submit'])){
+            if(empty($_POST['name']) || empty($_POST['email']) || empty($_POST['pass']) || empty($_POST['role'])){
+                echo "<script>Swal.fire({
+                            position: 'center',
+                            icon: 'error',
+                            title: 'fill all fields',
+                            showConfirmButton: false,
+                            timer: 1500
+                        });</script>";
+                return;
+            }else{
+            $name = $_POST['name'];
+            $email = $_POST['email'];
+            $password = $_POST['pass'];
+            $role = $_POST['role'];
+            }
+            $addUser = new UserRepo();
+            $student = new user($name, $email, $password, $role, 'active');
+            $addUser::register($student);
+            echo "<script>Swal.fire({
+                    position: 'center',
+                    icon: 'success',
+                    title: 'Registration Successful',
+                    showConfirmButton: false,
+                    timer: 1500
+                });</script>";
+    }
+
+}catch (PDOException) {
+    echo "<script>Swal.fire({
+                            position: 'center',
+                            icon: 'error',
+                            title: 'this email is already registered',
+                            showConfirmButton: false,
+                            timer: 1500
+                        });</script>";
+}
+
+?>
