@@ -2,7 +2,7 @@
 session_start();
 // session_destroy();
 if($_SESSION){ 
-    if($_SESSION['role']=='teacher'){
+    if($_SESSION['role']=='teacher' && $_SESSION['status']=='active'){
     ?>
 
 <!DOCTYPE html>
@@ -17,7 +17,7 @@ if($_SESSION){
     <script>
         // Initialisation de TinyMCE
         tinymce.init({
-            selector: '#description', // Cible le textarea avec l'ID "description"
+            selector: '#contenu', // Cible le textarea avec l'ID "description"
             plugins: 'advlist autolink lists link image charmap preview anchor table',
             toolbar: 'undo redo | formatselect | bold italic underline | alignleft aligncenter alignright | bullist numlist | link image',
             menubar: false,
@@ -51,8 +51,7 @@ if($_SESSION){
         </div>
     </nav>
 
-    <?php }else if($_SESSION['role']=='student'){
-        ?>
+    <?php }else if($_SESSION['role']=='student'&& $_SESSION['status']=='active'){ ?>
 
         <!DOCTYPE html>
         <html lang="en">
