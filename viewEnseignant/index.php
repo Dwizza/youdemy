@@ -4,7 +4,11 @@ include_once 'header.php';
 <!-- Hero Section -->
     <div class="bg-gradient-to-r from-green-500 to-green-600 py-12 md:py-20">
         <div class="container mx-auto text-center text-white px-4">
-            <h1 class="text-3xl md:text-5xl font-bold mb-4">Learning that gets you</h1>
+            <?php if($_SESSION){ ?>
+            <h1 class="text-3xl md:text-5xl font-bold mb-4">Welcome <?= $_SESSION['userName']?></h1>
+            <?php }else{?>
+            <p class="text-3xl md:text-5xl font-bold mb-4">Start learning with us today.</p>
+            <?php }?>
             <p class="text-lg md:text-xl mb-8">Skills for your present (and future). Get started with us.</p>
             <button class="bg-white text-green-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100">Explore now</button>
         </div>

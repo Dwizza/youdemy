@@ -48,6 +48,7 @@
 </body>
 </html>
 <?php
+session_start();
 include_once '../classes/userRepo.php';
 if(isset($_POST['login'])){
     $email = $_POST['email'];
