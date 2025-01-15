@@ -34,6 +34,8 @@ class UserRepo{
                     header("Location: ../dashboard/index.php");
                 }else if($myuser["role"] == "teacher" && $myuser['status']=='active') {
                     header("Location: ../viewEnseignant/index.php");
+                }else if($myuser["role"] == "teacher" && $myuser['status']=='pending') {
+                    header("Location: ../viewEnseignant/pending.php");
                 }else if($myuser["role"] == "student" && $myuser['status']=='active') {
                     header("Location: ../viewEnseignant/index.php");
                 }else if($myuser['status']=='inactive'){
@@ -51,13 +53,14 @@ class UserRepo{
         }
     }
 
+
     static public function logout(){
         session_destroy();
         header("location:../viewEnseignant/index.php");
     }
     static public function displayUsers(){
         $conn = Database::getConnection();
-        $stmt = $conn->prepare("SELECT * FROM users where role != 'admin'");
+        $stmt = $conn->prepare("SELECT * FROM users where role != 'admin' AND status != 'pending'");
         $stmt->execute();
         $users = $stmt->fetchAll();
         foreach($users as $user){
@@ -67,18 +70,34 @@ class UserRepo{
                 echo "<td class='p-1'>".$user['role']."</td>";
                 echo "<td class='p-2'>";
                 if($user['status']=='active'){ 
-                    echo "<a href='../classes/is_active.php?id=".$user['user_id']."' class='bg-green-500 text-white px-3 py-2 rounded text-sm cursor-pointer'>Activer</a>";
+                    echo "<a href='../dashboard/usergestion.php?id=".$user['user_id']."' class='bg-green-500 text-white px-3 py-2 rounded text-sm cursor-pointer'>Activer</a>";
                 }else{
-                    echo "<a href='../classes/is_active.php?id=".$user['user_id']."' class='bg-red-500 text-white px-3 py-2 rounded text-sm cursor-pointer'>Désactiver</a>";
+                    echo "<a href='../dashboard/usergestion.php?id=".$user['user_id']."' class='bg-red-500 text-white px-3 py-2 rounded text-sm cursor-pointer'>Désactiver</a>";
                 }
                 echo "</td></tr>";
         }
         
     }
-}
-if(isset($_GET['id'])){
-session_start();
-$logout = new UserRepo();
-$logout::logout();
+    public function is_active($id){
+        $conn = Database::getConnection();
+        $stmt = $conn->prepare("SELECT * FROM users where user_id = :id");
+        $stmt->execute([':id' => $id]);
+        $user = $stmt->fetch();
+        if($user['status']=='active'){
+            $stmt = $conn->prepare("UPDATE users SET status = 'inactive' WHERE user_id = :id");
+            $stmt->execute([':id' => $id]);
+        }else{
+            $stmt = $conn->prepare("UPDATE users SET status = 'active' WHERE user_id = :id");
+            $stmt->execute([':id' => $id]);
+        }
+    }
+    static public function displayPendingUsers(){
+        $conn = Database::getConnection();
+        $stmt = $conn->prepare("SELECT * FROM users where role != 'admin' AND status = 'pending'");
+        $stmt->execute();
+        $users = $stmt->fetchAll();
+        return $users;
+        
+    }
 }
 ?>

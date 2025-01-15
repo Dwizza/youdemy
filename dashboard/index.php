@@ -23,42 +23,20 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class="border-b text-center">
-                            <td class="p-2">John Doe</td>
-                            <td class="p-2">john@example.com</td>
-                            <td class="p-2">
-                                <button class="bg-green-500 text-white px-2 py-1 rounded-lg mr-2">Valider</button>
-                                <button class="bg-red-500 text-white px-2 py-1 rounded-lg">Rejeter</button>
-                            </td>
-                        </tr>
-                        <!-- Ajouter plus de lignes ici -->
-                    </tbody>
-                </table>
-            </div>
+                        <?php 
+                        include_once '../classes/userRepo.php';
+                        $users = UserRepo::displayPendingUsers();
+                        foreach($users as $user){
+                            echo "<tr class='border-b text-center'>";
+                                echo  "<td class='p-1'>".$user['username']."</td>";
+                                echo "<td class='p-1'>".$user['email']."</td>";
+                                echo "<td class='p-2 flex justify-center gap-4'>";
+                                echo "<a href='../classes/is_active.php?id=".$user['user_id']."&status=activer' class='bg-green-500 text-white px-3 py-2 rounded text-sm cursor-pointer'><b>Valider</b></a>";
+                                echo "<a href='../classes/is_active.php?id=".$user['user_id']."&status=delete' class='bg-red-500 text-white px-3 py-2 rounded text-sm cursor-pointer'><b>Supprimer</b></a>";
+                                echo "</td></tr>";
+                        }
 
-            <!-- Gestion des utilisateurs -->
-            <div class="bg-white p-6 rounded-lg shadow-md mb-8">
-                <h3 class="text-xl font-bold mb-4">Gestion des utilisateurs</h3>
-                <table class="w-full">
-                    <thead>
-                        <tr class="bg-gray-200">
-                            <th class="p-2">Nom</th>
-                            <th class="p-2">Email</th>
-                            <th class="p-2">Rôle</th>
-                            <th class="p-2">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr class="border-b text-center">
-                            <td class="p-2">Jane Doe</td>
-                            <td class="p-2">jane@example.com</td>
-                            <td class="p-2">Étudiant</td>
-                            <td class="p-2">
-                                <button class="bg-blue-500 text-white px-2 py-1 rounded-lg mr-2">Activer</button>
-                                <button class="bg-yellow-500 text-white px-2 py-1 rounded-lg mr-2">Suspendre</button>
-                                <button class="bg-red-500 text-white px-2 py-1 rounded-lg">Supprimer</button>
-                            </td>
-                        </tr>
+                        ?>
                         <!-- Ajouter plus de lignes ici -->
                     </tbody>
                 </table>

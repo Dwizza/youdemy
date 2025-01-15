@@ -1,4 +1,12 @@
-<?php include_once 'header.php'; ?>
+<?php include_once 'header.php'; 
+        include_once '../classes/userRepo.php';
+if(isset($_GET['id'])){
+    $id = $_GET['id'];
+    $is_active = new UserRepo();
+    $is_active->is_active($id);
+    header("Location: ../dashboard/usergestion.php");
+}
+?>
 <div class="bg-white w-full p-4 rounded-lg shadow-md mb-4 overflow-x-auto">
     <h3 class="text-lg font-bold mb-2">Gestion des utilisateurs</h3>
     <table class="w-full min-w-[600px]">
@@ -19,4 +27,4 @@
         </tbody>
     </table>
 </div>
-<?php include_once 'footer.php'; ?>
+<?php include_once 'footer.php';?>

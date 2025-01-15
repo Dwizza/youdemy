@@ -48,7 +48,7 @@ if($_SESSION){
                 </div>
                 <i class="fas fa-shopping-cart text-gray-700 hover:text-green-600 cursor-pointer"></i>
                 <i class="fas fa-bell text-gray-700 hover:text-green-600 cursor-pointer"></i>
-                <a href="../classes/UserRepo.php?id=<?= $_SESSION['userid']?>"><i class="fa-solid fa-right-from-bracket text-gray-700 hover:text-green-600 cursor-pointer"></i></a>
+                <a href="../viewEnseignant/logout.php?id=<?= $_SESSION['userid']?>"><i class="fa-solid fa-right-from-bracket text-gray-700 hover:text-green-600 cursor-pointer"></i></a>
             </div>
         </div>
     </nav>
@@ -97,7 +97,7 @@ if($_SESSION){
                         </div>
                         <i class="fas fa-shopping-cart text-gray-700 hover:text-green-600 cursor-pointer"></i>
                         <i class="fas fa-bell text-gray-700 hover:text-green-600 cursor-pointer"></i>
-                        <a href="../classes/UserRepo.php?id=<?= $_SESSION['userid']?>"><i class="fa-solid fa-right-from-bracket text-gray-700 hover:text-green-600 cursor-pointer"></i></a>
+                        <a href="../viewEnseignant/logout.php?id=<?= $_SESSION['userid']?>"><i class="fa-solid fa-right-from-bracket text-gray-700 hover:text-green-600 cursor-pointer"></i></a>
                     </div>
                 </div>
             </nav>

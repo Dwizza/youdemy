@@ -1,4 +1,9 @@
-<?php session_start()?>
+<?php 
+session_start();
+if( $_SESSION['role'] == '' ){
+    header('location: ../viewenseignant/index.php');
+}else{
+?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -61,11 +66,12 @@
                     </a>
                 </li>
                 <li class="mb-4">
-                    <a href="../classes/userrepo.php?id=<?= $_SESSION['userid']?>" class="flex items-center hover:bg-gray-700 p-2 rounded">
+                    <a href="../viewEnseignant/logout.php?id=<?= $_SESSION['userid']?>" class="flex items-center hover:bg-gray-700 p-2 rounded">
                     <i class="fa-solid fa-right-from-bracket text-red-500 ml-1 mr-2"></i> Log out
                     </a>
                 </li>
             </ul>
         </div>
+        <?php }?>
 
     
