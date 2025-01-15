@@ -1,7 +1,7 @@
 <?php
 require_once '../config/database.php';
 class UserRepo{
-    static public function register(User $user){
+    public function register(User $user){
         $conn = Database::getConnection();
         $stmt = $conn->prepare("INSERT INTO users (username, email, password_hash, role, status) VALUES (:username, :email, :password, :role, :status)");
         $stmt->execute([
@@ -12,7 +12,7 @@ class UserRepo{
             ':status' => $user->getStatus()
         ]);
     }
-    static public function login($email,$password){
+    public function login($email,$password){
         try{
                 $conn = Database::getConnection();
                 $stmt = $conn->prepare("SELECT * FROM users WHERE email = :email");
@@ -54,11 +54,11 @@ class UserRepo{
     }
 
 
-    static public function logout(){
+    public function logout(){
         session_destroy();
         header("location:../viewEnseignant/index.php");
     }
-    static public function displayUsers(){
+    public function displayUsers(){
         $conn = Database::getConnection();
         $stmt = $conn->prepare("SELECT * FROM users where role != 'admin' AND status != 'pending'");
         $stmt->execute();
@@ -91,13 +91,22 @@ class UserRepo{
             $stmt->execute([':id' => $id]);
         }
     }
-    static public function displayPendingUsers(){
+    public function displayPendingUsers(){
         $conn = Database::getConnection();
         $stmt = $conn->prepare("SELECT * FROM users where role != 'admin' AND status = 'pending'");
         $stmt->execute();
         $users = $stmt->fetchAll();
         return $users;
         
+    }
+    public function valideTeachers($id, $status){
+        $conn = Database::getConnection();
+        $stmt = $conn->prepare("UPDATE users SET status = :status where user_id = :id");
+        $stmt->execute([
+            ':id' => $id,
+            ':status' => $status,
+        ]);
+
     }
 }
 ?>

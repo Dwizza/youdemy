@@ -15,8 +15,6 @@ class Tags{
         $stmt = $conn->prepare("INSERT INTO tags (name) VALUES (:name)");
         $stmt->execute([':name' => $tag]);
     }
-    
-    
 }
 
 ?>

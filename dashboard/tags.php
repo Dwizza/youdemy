@@ -25,6 +25,13 @@
            ?>
         </div>
     </div>
+    <div>
+            <h5 class="font-semibold mb-2">Ajouter des categories</h5>
+            <form class="flex gap-2" method="POST">
+                <input type="text" name="category" placeholder="Entrez une categories" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <button type="submit" name="submit" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">Ajouter</button>
+            </form>
+        </div>
 
     <!-- Section Tags -->
     <div>

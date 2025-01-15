@@ -21,7 +21,8 @@ if(isset($_GET['id'])){
         <tbody>
             <?php
             include_once '../classes/userRepo.php';
-            $users = UserRepo::displayUsers();
+            $users =new UserRepo;
+            $users->displayUsers();
             ?>
             
         </tbody>

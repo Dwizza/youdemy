@@ -82,7 +82,6 @@
 include_once '../config/database.php';
 include_once '../classes/User.php';
 include_once '../classes/userRepo.php';
-include_once '../classes/Student.php';
 try {
     if(isset($_POST['submit'])){
             if(empty($_POST['name']) || empty($_POST['email']) || empty($_POST['pass']) || empty($_POST['role'])){
@@ -102,7 +101,7 @@ try {
             }
             $addUser = new UserRepo();
             $student = new user($name, $email, $password, $role, 'active');
-            $addUser::register($student);
+            $addUser->register($student);
             echo "<script>Swal.fire({
                     position: 'center',
                     icon: 'success',

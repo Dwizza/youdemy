@@ -1,4 +1,11 @@
-<?php include_once 'header.php';?>
+<?php 
+include_once 'header.php';
+include_once '../classes/userRepo.php';
+    if(isset($_GET['id'])){
+        $validate = new UserRepo();
+        $validate->valideTeachers($_GET['id'],$_GET['status']);
+    }
+?>
 
         <!-- Contenu principal -->
         <div class="flex-1 p-8">
@@ -25,14 +32,15 @@
                     <tbody>
                         <?php 
                         include_once '../classes/userRepo.php';
-                        $users = UserRepo::displayPendingUsers();
+                        $affichage =new UserRepo;
+                        $users = $affichage->displayPendingUsers();
                         foreach($users as $user){
                             echo "<tr class='border-b text-center'>";
                                 echo  "<td class='p-1'>".$user['username']."</td>";
                                 echo "<td class='p-1'>".$user['email']."</td>";
                                 echo "<td class='p-2 flex justify-center gap-4'>";
-                                echo "<a href='../classes/is_active.php?id=".$user['user_id']."&status=activer' class='bg-green-500 text-white px-3 py-2 rounded text-sm cursor-pointer'><b>Valider</b></a>";
-                                echo "<a href='../classes/is_active.php?id=".$user['user_id']."&status=delete' class='bg-red-500 text-white px-3 py-2 rounded text-sm cursor-pointer'><b>Supprimer</b></a>";
+                                echo "<a href='../dashboard/index.php?id=".$user['user_id']."&status=active' class='bg-green-500 text-white px-3 py-2 rounded text-sm cursor-pointer'><b>Valider</b></a>";
+                                echo "<a href='../dashboard/index.php?id=".$user['user_id']."&status=inactive' class='bg-red-500 text-white px-3 py-2 rounded text-sm cursor-pointer'><b>Supprimer</b></a>";
                                 echo "</td></tr>";
                         }
 

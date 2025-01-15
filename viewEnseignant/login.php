@@ -54,6 +54,6 @@ if(isset($_POST['login'])){
     $email = $_POST['email'];
     $password = $_POST['pass'];
     $login = new UserRepo();
-    $login::login($email,$password);
+    $login->login($email,$password);
     
 }
