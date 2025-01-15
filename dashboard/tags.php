@@ -1,4 +1,11 @@
 <?php include_once 'header.php'; ?>
+    <?php 
+    include_once '../classes/tags.php';
+    if(isset($_POST['submit'])){
+        $tag = new Tags();
+        $tag->addTag($_POST['tag']);
+    }
+    ?>
 <div class="bg-white w-full p-6 rounded-lg shadow-md">
     <h3 class="text-xl font-bold mb-4">Gestion des catégories et tags</h3>
 
@@ -6,35 +13,16 @@
     <div class="mb-6">
         <h4 class="text-lg font-semibold mb-2">Catégories</h4>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <!-- Carte Catégorie 1 -->
-            <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
-                <h5 class="font-bold text-gray-700">Informatique</h5>
-                <p class="text-sm text-gray-500">12 cours</p>
-                <div class="mt-2">
-                    <button class="bg-blue-500 text-white px-3 py-1 rounded text-sm">Modifier</button>
-                    <button class="bg-red-500 text-white px-3 py-1 rounded text-sm ml-2">Supprimer</button>
-                </div>
-            </div>
-
-            <!-- Carte Catégorie 2 -->
-            <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
-                <h5 class="font-bold text-gray-700">Design</h5>
-                <p class="text-sm text-gray-500">8 cours</p>
-                <div class="mt-2">
-                    <button class="bg-blue-500 text-white px-3 py-1 rounded text-sm">Modifier</button>
-                    <button class="bg-red-500 text-white px-3 py-1 rounded text-sm ml-2">Supprimer</button>
-                </div>
-            </div>
-
-            <!-- Carte Catégorie 3 -->
-            <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
-                <h5 class="font-bold text-gray-700">Business</h5>
-                <p class="text-sm text-gray-500">5 cours</p>
-                <div class="mt-2">
-                    <button class="bg-blue-500 text-white px-3 py-1 rounded text-sm">Modifier</button>
-                    <button class="bg-red-500 text-white px-3 py-1 rounded text-sm ml-2">Supprimer</button>
-                </div>
-            </div>
+            <!-- Liste des catégories -->
+           <?php 
+           include_once '../classes/category.php';
+            $categories = category::displayCategories();
+            foreach($categories as $category){
+                echo "<div class='bg-gray-100 p-4 rounded-lg shadow-md'>";
+                echo "<h5 class='font-semibold mb-2'>".$category['name']."</h5>";
+                echo "</div>";
+            }
+           ?>
         </div>
     </div>
 
@@ -48,15 +36,23 @@
                 <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm">CSS</span>
                 <span class="bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-sm">JavaScript</span>
                 <span class="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-sm">React</span>
+                <?php
+                include_once '../classes/tags.php'; 
+                $affiche = new Tags();
+                $tags = $affiche->displayTags();
+                foreach($tags as $tag){
+                    echo "<span class='bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm'>".$tag['name']."</span>";
+                }
+                ?>
             </div>
         </div>
 
         <!-- Formulaire d'ajout de Tags -->
         <div>
             <h5 class="font-semibold mb-2">Ajouter des tags</h5>
-            <form class="flex gap-2">
-                <input type="text" placeholder="Entrez un tag" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-                <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">Ajouter</button>
+            <form class="flex gap-2" method="POST">
+                <input type="text" name="tag" placeholder="Entrez un tag" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <button type="submit" name="submit" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">Ajouter</button>
             </form>
         </div>
     </div>
