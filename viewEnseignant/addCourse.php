@@ -1,8 +1,34 @@
-<?php include_once 'header.php';?>
+<?php include_once 'header.php';
+include_once '../classes/course.php';
+include_once '../config/database.php';
+if(isset($_POST['submit'])){
+    $title = $_POST['title'];
+    $description = $_POST['content'];
+    $thumbnail = $_POST['thumbnail'];
+    $category = $_POST['category'];
+    $teacherId = $_SESSION["userid"];
+    if($_POST['fileType'] == 'pdf'){
+        $pdfUrl = $_POST['pdfUrl'];
+        $course = new Course($title, $description,  $thumbnail, $category, $teacherId, $pdfUrl, 'pdf');
+        $tags = $_POST['tags'];
+        $course->addCourse($tags);
+    }else{
+        $videoUrl = $_POST['videoUrl'];
+        $course = new Course($title, $description,  $thumbnail, $category, $teacherId, $videoUrl, 'video');
+        $tags = $_POST['tags'];
+        $course->addCourse($tags);
+        
+    }
+    // $tags = $_POST['tags'];
+    // foreach($tags as $tag){
+    //     $course->addTag($tag);
+    // }
+}
+?>
 
 <div class="container mx-auto p-4">
     <h1 class="text-3xl font-bold text-center mb-8" style="color: #059669;">Ajouter un Nouveau Cours</h1>
-    <form class="bg-white p-6 rounded-lg shadow-md">
+    <form class="bg-white p-6 rounded-lg shadow-md" method="post">
         <!-- Titre du cours -->
         <div class="mb-4">
             <label for="title" class="block text-gray-700 font-bold mb-2">Titre du Cours</label>
@@ -11,31 +37,44 @@
 
         <!-- Description du cours (textarea simple) -->
         <div class="mb-4">
-            <label for="description" class="block text-gray-700 font-bold mb-2">Description</label>
-            <textarea id="description" name="description" rows="4" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" placeholder="Entrez la description du cours" required></textarea>
-        </div>
-        <div>
-            <select name="" id=""></select>
-        </div>
-        <div class="mb-4">
-            <label for="thumbnail" class="block text-gray-700 font-bold mb-2">Thumbnail du Cours</label>
-            <!-- Champ d'upload de fichier stylisé -->
-            <div class="flex items-center justify-center w-full">
-                <label for="thumbnail" class="flex flex-col items-center justify-center w-full h-32 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100">
-                    <div class="flex flex-col items-center justify-center pt-5 pb-6">
-                        <svg class="w-8 h-8 mb-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L7 9m3-3 3 3"/>
-                        </svg>
-                        <p class="mb-2 text-sm text-gray-500"><span class="font-semibold">Cliquez pour uploader</span> ou glissez-déposez</p>
-                        <p class="text-xs text-gray-500">PNG, JPG, JPEG (MAX. 2MB)</p>
-                    </div>
-                    <input type="file" id="thumbnail" name="thumbnail" class="hidden" accept="image/*" required>
-                </label>
+        <label for="title" class="block text-gray-700 font-bold mb-2">Description</label>
+                <textarea
+                    id="content"
+                    name="content"
+                    rows="4"
+                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    placeholder="Write something..."
+                ></textarea>
             </div>
-            <!-- Aperçu de l'image sélectionnée -->
-            <div id="thumbnail-preview" class="mt-4 hidden">
-                <img id="preview-image" class="w-32 h-32 object-cover rounded-lg border border-gray-200" src="#" alt="Aperçu de la thumbnail">
+
+<!-- Sélectionner le type de fichier -->
+            <div class="mb-4">
+                <label for="fileType" class="block text-gray-700 font-bold mb-2">Type de Fichier</label>
+                <select name="fileType" id="fileType" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" onchange="toggleFileInput()">
+                    <option value="" selected>Choisir votre type de fichier</option>
+                    <option value="pdf">PDF</option>
+                    <option value="video">Vidéo</option>
+                </select>
             </div>
+
+            <!-- Champ pour l'URL du PDF (affiché par défaut) -->
+            <div class="mb-4 hidden" id="pdfInput">
+                <label for="pdfUrl" class="block text-gray-700 font-bold mb-2">URL du PDF</label>
+                <input type="url" id="pdfUrl" name="pdfUrl" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" placeholder="Entrez l'URL du PDF">
+            </div>
+
+            <!-- Champ pour l'URL de la vidéo (caché par défaut) -->
+            <div class="mb-4 hidden" id="videoInput">
+                <label for="videoUrl" class="block text-gray-700 font-bold mb-2">URL de la Vidéo</label>
+                <input type="url" id="videoUrl" name="videoUrl" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" placeholder="Entrez l'URL de la vidéo">
+            </div>
+
+<!-- ajouter thumbnail -->
+
+        
+        <div class="mb-4" id="thumbnail">
+                <label for="thumbnail" class="block text-gray-700 font-bold mb-2">URL du thumbnail</label>
+                <input type="url" id="thumbnail" name="thumbnail" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" placeholder="Entrez l'URL du thumbnail">
         </div>
 
         <!-- Catégorie du cours -->
@@ -44,19 +83,36 @@
             <select id="category" name="category" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" required>
                 <?php 
                 include_once '../classes/category.php';
-                $categories = category::displayCategories();
+                $categorie = new category;
+                $categories = $categorie->displayCategories();
                 foreach($categories as $category){
-                    echo "<option value='".$category['id']."'>".$category['name']."</option>";
+                    echo "<option value='".$category['category_id']."'>".$category['name']."</option>";
                 }
                 ?>
             </select>
         </div>
-
-      
+        <!-- Tags du cours -->
+        <div class="p-8">
+    <h2 class="text-2xl font-bold text-gray-800 mb-6">Sélectionnez vos tags</h2>
+    <div class="flex flex-wrap gap-2">
+        <?php
+        include_once '../classes/tags.php';
+        $tag = new Tags();
+        $tags = $tag->displayTags();
+        foreach ($tags as $tag) {
+            echo '
+            <label class="tag-checkbox bg-gray-100 text-gray-700 px-4 py-2 rounded-full border border-gray-200 cursor-pointer hover:bg-green-100 transition-all duration-300 ease-in-out">
+                <input type="checkbox" name="tags[]" value="' . $tag['tag_id'] . '" class="hidden peer">
+                ' . $tag['name'] . '
+            </label>';
+        }
+        ?>
+    </div>
+</div>
 
         <!-- Bouton de soumission -->
         <div class="text-center">
-            <button type="submit" class="bg-green-500 text-white px-6 py-2 rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-[#059669]">
+            <button type="submit" name="submit" class="bg-green-500 text-white px-6 py-2 rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-[#059669]">
                 Ajouter le Cours
             </button>
         </div>
@@ -64,22 +120,53 @@
 </div>
 <script>
     document.getElementById('thumbnail').addEventListener('change', function(event) {
-        const file = event.target.files[0]; // Récupérer le fichier sélectionné
+        const file = event.target.files[0]; 
         const previewContainer = document.getElementById('thumbnail-preview');
         const previewImage = document.getElementById('preview-image');
 
         if (file) {
-            const reader = new FileReader(); // Lire le fichier
+            const reader = new FileReader(); 
 
             reader.onload = function(e) {
-                previewImage.src = e.target.result; // Mettre à jour la source de l'image
-                previewContainer.classList.remove('hidden'); // Afficher l'aperçu
+                previewImage.src = e.target.result;
+                previewContainer.classList.remove('hidden'); 
             };
 
-            reader.readAsDataURL(file); // Convertir le fichier en URL
+            reader.readAsDataURL(file); 
         } else {
-            previewContainer.classList.add('hidden'); // Cacher l'aperçu si aucun fichier n'est sélectionné
+            previewContainer.classList.add('hidden'); 
         }
     });
+    function toggleFileInput() {
+        const fileType = document.getElementById('fileType').value;
+        const pdfInput = document.getElementById('pdfInput');
+        const videoInput = document.getElementById('videoInput');
+
+        if (fileType === 'pdf') {
+            pdfInput.classList.remove('hidden');
+            videoInput.classList.add('hidden');
+        } else if (fileType === 'video') {
+            pdfInput.classList.add('hidden');
+            videoInput.classList.remove('hidden');
+        }else{
+            pdfInput.classList.add('hidden');
+            videoInput.classList.add('hidden');
+        }
+    }
+    document.querySelectorAll('.tag-checkbox input[type="checkbox"]').forEach(checkbox => {
+        checkbox.addEventListener('change', function () {
+            const label = this.closest('.tag-checkbox');
+            if (this.checked) {
+                label.classList.add('bg-green-500', 'text-white', 'border-green-500');
+                label.classList.remove('bg-gray-100', 'text-gray-700', 'border-gray-200');
+            } else {
+                label.classList.remove('bg-green-500', 'text-white', 'border-green-500');
+                label.classList.add('bg-gray-100', 'text-gray-700', 'border-gray-200');
+            }
+        });
+    });
+        
+
+    
 </script>
 <?php include_once 'footer.php';?>

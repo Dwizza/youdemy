@@ -17,7 +17,7 @@ if($_SESSION){
     <script>
         // Initialisation de TinyMCE
         tinymce.init({
-            selector: '#contenu', // Cible le textarea avec l'ID "description"
+            selector: '#content', // Cible le textarea avec l'ID "description"
             plugins: 'advlist autolink lists link image charmap preview anchor table',
             toolbar: 'undo redo | formatselect | bold italic underline | alignleft aligncenter alignright | bullist numlist | link image',
             menubar: false,
