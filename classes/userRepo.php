@@ -52,8 +52,6 @@ class UserRepo{
             });</script>";
         }
     }
-
-
     public function logout(){
         session_destroy();
         header("location:../viewEnseignant/index.php");
@@ -106,7 +104,6 @@ class UserRepo{
             ':id' => $id,
             ':status' => $status,
         ]);
-
     }
 }
 ?>

@@ -2,7 +2,7 @@
 include_once '../config/database.php';
 class Tags{
 
-    public static function displayTags(){
+    public function displayTags(){
         $conn = Database::getConnection();
         $stmt = $conn->prepare("SELECT * FROM tags");
         $stmt->execute();
@@ -10,11 +10,12 @@ class Tags{
         return $tags;
     }
 
-    public static function addTag($tag){
+    public function addTag($tag){
         $conn = Database::getConnection();
         $stmt = $conn->prepare("INSERT INTO tags (name) VALUES (:name)");
         $stmt->execute([':name' => $tag]);
     }
+    
 }
 
 ?>

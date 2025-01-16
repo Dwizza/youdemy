@@ -7,7 +7,7 @@ class User{
     private $role;
     private $status;
     
-    function __construct($username, $email, $password, $role, $status){
+    public function __construct($username, $email, $password, $role, $status){
         $this->username = $username;
         $this->email = $email;
         $this->password = $password;
@@ -15,44 +15,44 @@ class User{
         $this->status = $status;
     }
 
-    function getId(){
+    public function getId(){
         return $this->id;
     }
-    function setId($id){
+    public function setId($id){
         $this->id = $id;
     }
-    function getUsername(){
+    public function getUsername(){
         return $this->username;
     }
-    function setUsername($username){
+    public function setUsername($username){
         $this->username = $username;
     }
 
-    function getEmail(){
+    public function getEmail(){
         return $this->email;
     }
-    function setEmail($email){
+    public function setEmail($email){
         $this->email = $email;
     }
 
-    function getPassword(){
+    public function getPassword(){
         return $this->password;
     }
-    function setPassword($password){
+    public function setPassword($password){
         $this->password = $password;
     }
 
-    function getRole(){
+    public function getRole(){
         return $this->role;
     }
-    function setRole($role){
+    public function setRole($role){
         $this->role = $role;
     }
 
-    function getStatus(){
+    public function getStatus(){
         return $this->status;
     }
-    function setStatus($status){
+    public function setStatus($status){
         $this->status = $status;
     }
 

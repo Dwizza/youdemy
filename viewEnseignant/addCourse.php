@@ -11,16 +11,12 @@
 
         <!-- Description du cours (textarea simple) -->
         <div class="mb-4">
-            <label for="contenu" class="block text-gray-700 font-bold mb-2">Contenu du cours</label>
-            <textarea id="contenu" name="contenu" rows="4" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" placeholder="Entrez le contenu du cours" required></textarea>
-        </div>
-
-        <!-- Description détaillée du cours (textarea avec TinyMCE) -->
-        <div class="mb-4">
             <label for="description" class="block text-gray-700 font-bold mb-2">Description</label>
-            <textarea id="description" name="description" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"></textarea>
+            <textarea id="description" name="description" rows="4" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" placeholder="Entrez la description du cours" required></textarea>
         </div>
-
+        <div>
+            <select name="" id=""></select>
+        </div>
         <div class="mb-4">
             <label for="thumbnail" class="block text-gray-700 font-bold mb-2">Thumbnail du Cours</label>
             <!-- Champ d'upload de fichier stylisé -->
