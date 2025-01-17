@@ -5,11 +5,11 @@ if (isset($_GET['course_id']) && isset($_GET['type'])) {
     if ($_GET['type'] == 'pdf') {
         include_once '../classes/pdf.php';
         $pdf = new Pdf();
-        $courses = $pdf->displayCourse($_GET['course_id']);
+        $courses = $pdf->displayCourses($_GET['course_id']);
     } else {
         include_once '../classes/video.php';
         $pdf = new Video();
-        $courses = $pdf->displayCourse($_GET['course_id']);
+        $courses = $pdf->displayCourses($_GET['course_id']);
     }
 }
 ?>

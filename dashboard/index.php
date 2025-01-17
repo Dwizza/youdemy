@@ -49,6 +49,39 @@ include_once '../classes/userRepo.php';
                     </tbody>
                 </table>
             </div>
+            <!-- Validation des cours -->
+            <div class="bg-white p-6 rounded-lg shadow-md mb-8">
+                <h3 class="text-xl font-bold mb-4">Validation des cours</h3>
+                <table class="w-full">
+                    <thead>
+                        <tr class="bg-gray-200">
+                            <th class="p-2">Title</th>
+                            <th class="p-2">Enseignant</th>
+                            <th class="p-2">Description</th>
+                            <th class="p-2">Content</th>
+                            <th class="p-2">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php 
+                        include_once '../classes/userRepo.php';
+                        $affichage =new UserRepo;
+                        $users = $affichage->displayPendingUsers();
+                        foreach($users as $user){
+                            echo "<tr class='border-b text-center'>";
+                                echo  "<td class='p-1'>".$user['username']."</td>";
+                                echo "<td class='p-1'>".$user['email']."</td>";
+                                echo "<td class='p-2 flex justify-center gap-4'>";
+                                echo "<a href='../dashboard/index.php?id=".$user['user_id']."&status=active' class='bg-green-500 text-white px-3 py-2 rounded text-sm cursor-pointer'><b>Valider</b></a>";
+                                echo "<a href='../dashboard/index.php?id=".$user['user_id']."&status=inactive' class='bg-red-500 text-white px-3 py-2 rounded text-sm cursor-pointer'><b>Supprimer</b></a>";
+                                echo "</td></tr>";
+                        }
+
+                        ?>
+                        <!-- Ajouter plus de lignes ici -->
+                    </tbody>
+                </table>
+            </div>
 
             <!-- Statistiques -->
             <div class="bg-white p-6 rounded-lg shadow-md mb-8">
