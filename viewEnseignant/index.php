@@ -84,7 +84,25 @@ include_once 'header.php';
                     <a href="#" class="justify-self-end text-2xl font-bold text-gray-100 py-2 bg-green-500 text-center rounded-lg transition-all duration-300 ease-in-out hover:text-gray-50 hover:bg-green-600 hover:scale-105 hover:shadow-lg">S'inscrire</a>
                 </div>
             </div>
-            <video src="https://www.youtube.com/watch?v=mEz_Rh4tot8&t=14s" class="w-72 h-20"></video>
+            <?php 
+            include_once '../classes/pdf.php';
+            $affichagePdf = new pdf();
+            $pdfs = $affichagePdf->displayCourses();
+            foreach($pdfs as $pdf){
+                echo "<div class='bg-white shadow-lg rounded-lg overflow-hidden'>
+                <img src='".$pdf['thumbnail']."' alt='Course 4' class='w-full h-48 object-cover'>
+                <div class='p-6 flex flex-col gap-2'>
+                    <h3 class='text-xl font-bold text-gray-800 mb-2'>".$pdf['title']."</h3>
+                    <div class='flex items-center mb-2'>
+                        <span class='text-yellow-400'>★★★★★</span>
+                        <span class='text-gray-600 ml-2'>4.7 (80,000 students)</span>
+                    </div>
+                    <a href='' class='justify-self-end text-2xl font-bold text-gray-100 py-2 bg-green-500 text-center rounded-lg transition-all duration-300 ease-in-out hover:text-gray-50 hover:bg-green-600 hover:scale-105 hover:shadow-lg'>S'inscrire</a>
+                </div>
+            </div>";
+            }
+            ?>
+            
         </div>
     </div>
     <?php

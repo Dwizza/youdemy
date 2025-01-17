@@ -1,5 +1,6 @@
 <?php include_once 'header.php';
-include_once '../classes/course.php';
+include_once '../classes/pdf.php';
+include_once '../classes/video.php';
 include_once '../config/database.php';
 if(isset($_POST['submit'])){
     $title = $_POST['title'];
@@ -9,20 +10,15 @@ if(isset($_POST['submit'])){
     $teacherId = $_SESSION["userid"];
     if($_POST['fileType'] == 'pdf'){
         $pdfUrl = $_POST['pdfUrl'];
-        $course = new Course($title, $description,  $thumbnail, $category, $teacherId, $pdfUrl, 'pdf');
+        $course = new pdf($title, $description,  $thumbnail, $category, $teacherId, $pdfUrl);
         $tags = $_POST['tags'];
         $course->addCourse($tags);
     }else{
         $videoUrl = $_POST['videoUrl'];
-        $course = new Course($title, $description,  $thumbnail, $category, $teacherId, $videoUrl, 'video');
+        $course = new video($title, $description,  $thumbnail, $category, $teacherId, $videoUrl);
         $tags = $_POST['tags'];
         $course->addCourse($tags);
-        
     }
-    // $tags = $_POST['tags'];
-    // foreach($tags as $tag){
-    //     $course->addTag($tag);
-    // }
 }
 ?>
 
