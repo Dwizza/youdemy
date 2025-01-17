@@ -18,6 +18,7 @@ abstract class Course{
     }
     
     abstract public function addCourse($tags);
+    abstract public function displayCourses();
     
 }
 

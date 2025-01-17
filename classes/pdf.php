@@ -33,9 +33,26 @@ class Pdf extends Course{
                 LEFT JOIN Coursetags ct ON c.course_id = ct.course_id
                 LEFT JOIN Tags t ON ct.tag_id = t.tag_id
                 LEFT JOIN Categories cat ON c.category_id = cat.category_id
+                WHERE c.type = 'pdf'
                 GROUP BY c.course_id;");
         $stmt->execute();
         $courses = $stmt->fetchAll();
         return $courses;
+    }
+    public function displayCourse($course_id){
+        $conn = Database::getConnection();
+        $stmt = $conn->prepare("SELECT users.username, c.`course_id`, c.title, c.description, c.content, c.teacher_id, c.category_id,c.created_at, c.thumbnail, c.type, c.status ,
+                GROUP_CONCAT(t.name ORDER BY t.name) AS tags, c.type, 
+                cat.name  AS category
+                FROM courses c
+                join users on users.user_id = c.teacher_id
+                LEFT JOIN Coursetags ct ON c.course_id = ct.course_id
+                LEFT JOIN Tags t ON ct.tag_id = t.tag_id
+                LEFT JOIN Categories cat ON c.category_id = cat.category_id
+                WHERE c.type = 'pdf' AND c.course_id = :course_id AND  users.user_id = c.teacher_id
+                GROUP BY c.course_id;");
+        $stmt->execute([':course_id' => $course_id]);
+        $course = $stmt->fetch();
+        return $course;
     }
 }
