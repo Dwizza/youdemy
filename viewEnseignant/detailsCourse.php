@@ -16,6 +16,8 @@ if (isset($_GET['course_id']) && isset($_GET['type'])) {
         $enroll = new UserRepo();
         $count = $enroll->checkEnrollCourse($_GET['course_id'],$_SESSION['userid']);
         $enroll->enrollCourses($count, $_GET['course_id'], $_SESSION['userid']);
+    }else if($_SESSION['role'] == 'teacher'&& $_SESSION['userid'] !=  $_GET['user_id']){
+        header('location: index.php');
     }
 }
 ?>
