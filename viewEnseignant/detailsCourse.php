@@ -11,6 +11,12 @@ if (isset($_GET['course_id']) && isset($_GET['type'])) {
         $pdf = new Video();
         $courses = $pdf->displayCourses($_GET['course_id']);
     }
+    if($_SESSION['role'] == 'student'){
+        include_once '../classes/userRepo.php';
+        $enroll = new UserRepo();
+        $count = $enroll->checkEnrollCourse($_GET['course_id'],$_SESSION['userid']);
+        $enroll->enrollCourses($count, $_GET['course_id'], $_SESSION['userid']);
+    }
 }
 ?>
 <!DOCTYPE html>

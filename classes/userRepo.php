@@ -105,5 +105,25 @@ class UserRepo{
             ':status' => $status,
         ]);
     }
+    public function checkEnrollCourse($course_id, $student_id){
+        $conn = Database::getConnection();
+        $checkStmt = $conn->prepare("SELECT COUNT(*) FROM enrollments WHERE course_id = :course_id AND student_id = :student_id");
+        $checkStmt->execute([
+            ':course_id' => $course_id,
+            ':student_id' => $student_id
+        ]);
+        $count = $checkStmt->fetchColumn();
+        return $count;
+    }
+    public function enrollCourses($count, $course_id, $student_id){
+        if ( $count == 0) {
+            $conn = Database::getConnection();
+            $stmt = $conn->prepare("INSERT INTO enrollments (course_id, student_id) VALUES (:course_id, :student_id)");
+            $stmt->execute([
+                ':course_id' => $course_id,
+                ':student_id' => $student_id
+            ]);
+            }
+    }
 }
 ?>

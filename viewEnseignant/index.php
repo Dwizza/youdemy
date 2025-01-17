@@ -22,25 +22,57 @@ include_once 'header.php';
             <?php 
             include_once '../config/database.php';
             include_once '../classes/allCourses.php';
+            include_once '../classes/userrepo.php';
             $affichage = new AllCourses();
             $courses = $affichage->displayCourses();
+            if($_SESSION){
             foreach($courses as $course){
-                echo "<div class='bg-white shadow-lg rounded-lg overflow-hidden'>";
-                echo "<img src='".$course['thumbnail']."' alt='Course 4' class='w-full h-48 object-cover'>";
-                echo "<div class='p-6 flex flex-col gap-2'>";
-                echo "<h3 class='text-xl font-bold text-gray-800 mb-2'>".$course['title']."</h3>";
-                echo "<div class='flex items-center mb-2'>";
-                echo "<span class='text-yellow-400'>★★★★★</span>";
-                echo "<span class='text-gray-600 ml-2'>4.7 (80,000 students)</span>";
-                echo "</div>";
-                if($_SESSION){
-                    echo "<a href='detailsCourse.php?course_id=".$course['course_id']."&type=".$course['type']."' class='justify-self-end text-2xl font-bold text-gray-100 py-2 bg-green-500 text-center rounded-lg transition-all duration-300 ease-in-out hover:text-gray-50 hover:bg-green-600 hover:scale-105 hover:shadow-lg'>S'inscrire</a>";
-                }else{
-                    echo "<a href='login.php' class='justify-self-end text-2xl font-bold text-gray-100 py-2 bg-green-500 text-center rounded-lg transition-all duration-300 ease-in-out hover:text-gray-50 hover:bg-green-600 hover:scale-105 hover:shadow-lg'>S'inscrire</a>";
+                if($course['status'] == 'active'){
+                    $checkStmt = new UserRepo;
+                    $count = $checkStmt->checkEnrollCourse($course['course_id'],$_SESSION['userid']);
+                    echo "<div class='bg-white shadow-lg rounded-lg overflow-hidden'>";
+                    echo "<img src='".$course['thumbnail']."' alt='Course 4' class='w-full h-48 object-cover'>";
+                    echo "<div class='p-6 flex flex-col gap-2'>";
+                    echo "<h3 class='text-xl font-bold text-gray-800 mb-2'>".$course['title']."</h3>";
+                    echo "<h3 class='text-md italic text-gray-400 mb-2'>by ".$course['username']."</h3>";
+                    echo "<div class='flex items-center mb-2'>";
+                    echo "<span class='text-yellow-400'>★★★★★</span>";
+                    echo "<span class='text-gray-600 ml-2'>4.7 (80,000 students)</span>";
+                    echo "</div>";
+                    if($count == 0){
+                    if($_SESSION){
+                        echo "<a href='detailsCourse.php?course_id=".$course['course_id']."&type=".$course['type']."' class='justify-self-end text-2xl font-bold text-gray-100 py-2 bg-green-500 text-center rounded-lg transition-all duration-300 ease-in-out hover:text-gray-50 hover:bg-green-600 hover:scale-105 hover:shadow-lg'>S'inscrire</a>";
+                    }else{
+                        echo "<a href='login.php' class='justify-self-end text-2xl font-bold text-gray-100 py-2 bg-green-500 text-center rounded-lg transition-all duration-300 ease-in-out hover:text-gray-50 hover:bg-green-600 hover:scale-105 hover:shadow-lg'>S'inscrire</a>";
+                    }}else{
+                        echo "<a href='detailsCourse.php?course_id=".$course['course_id']."&type=".$course['type']."' class='justify-self-end text-2xl font-bold text-gray-100 py-2 bg-green-500 text-center rounded-lg transition-all duration-300 ease-in-out hover:text-gray-50 hover:bg-green-600 hover:scale-105 hover:shadow-lg'>Entrer</a>";
+                    }
+                    echo "</div>";
+                    echo "</div>";
                 }
-                echo "</div>";
-                echo "</div>";
             }
+            }else{
+                foreach($courses as $course){
+                    if($course['status'] == 'active'){
+                        $checkStmt = new UserRepo();
+                        echo "<div class='bg-white shadow-lg rounded-lg overflow-hidden'>";
+                        echo "<img src='".$course['thumbnail']."' alt='Course 4' class='w-full h-48 object-cover'>";
+                        echo "<div class='p-6 flex flex-col gap-2'>";
+                        echo "<h3 class='text-xl font-bold text-gray-800 mb-2'>".$course['title']."</h3>";
+                        echo "<div class='flex items-center mb-2'>";
+                        echo "<span class='text-yellow-400'>★★★★★</span>";
+                        echo "<span class='text-gray-600 ml-2'>4.7 (80,000 students)</span>";
+                        echo "</div>";
+                        echo "<a href='login.php' class='justify-self-end text-2xl font-bold text-gray-100 py-2 bg-green-500 text-center rounded-lg transition-all duration-300 ease-in-out hover:text-gray-50 hover:bg-green-600 hover:scale-105 hover:shadow-lg'>S'inscrire</a>";
+                      
+                        echo "</div>";
+                        echo "</div>";
+                    }
+                }
+            }
+
+                        
+                    
             ?>
             
         </div>
