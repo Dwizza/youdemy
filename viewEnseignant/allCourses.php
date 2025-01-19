@@ -39,9 +39,9 @@
                     echo "<span class='text-gray-600 ml-2'>4.7 (80,000 students)</span>";
                     echo "</div>";
                     if($count == 0){
-                        echo "<a href='detailsCourse.php?course_id=".$course['course_id']."&type=".$course['type']."' class='justify-self-end text-2xl font-bold text-gray-100 py-2 bg-green-500 text-center rounded-lg transition-all duration-300 ease-in-out hover:text-gray-50 hover:bg-green-600 hover:scale-105 hover:shadow-lg'>S'inscrire</a>";
+                        echo "<a href='detailsCourse.php?course_id=".$course['course_id']."&type=".$course['type']."' class='justify-self-end text-lg font-medium text-gray-100 py-2 bg-green-500 text-center rounded-lg transition-all duration-300 ease-in-out hover:text-gray-50 hover:bg-green-600 hover:scale-105 hover:shadow-lg'>S'inscrire</a>";
                     }else{
-                        echo "<a href='detailsCourse.php?course_id=".$course['course_id']."&type=".$course['type']."' class='justify-self-end text-2xl font-bold text-gray-100 py-2 bg-green-500 text-center rounded-lg transition-all duration-300 ease-in-out hover:text-gray-50 hover:bg-green-600 hover:scale-105 hover:shadow-lg'>Entrer</a>";
+                        echo "<a href='detailsCourse.php?course_id=".$course['course_id']."&type=".$course['type']."' class='justify-self-end text-lg font-medium text-gray-100 py-2 bg-green-500 text-center rounded-lg transition-all duration-300 ease-in-out hover:text-gray-50 hover:bg-green-600 hover:scale-105 hover:shadow-lg'>Accéder au cours</a>";
                     }
                     echo "</div>";
                     echo "</div>";

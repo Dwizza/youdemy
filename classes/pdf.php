@@ -41,4 +41,16 @@ class Pdf extends Course{
         $course = $stmt->fetch();
         return $course;
     }
+    public function editCourse($course_id) {
+        $conn = Database::getConnection();
+        $stmt = $conn->prepare("UPDATE courses SET title = :title, description = :description, thumbnail = :thumbnail, category_id = :category_id, content = :content WHERE course_id = :course_id");
+        $stmt->execute([
+            ':title' => $this->title,
+            ':description' => $this->description,
+            ':thumbnail' => $this->thumbnail,
+            ':category_id' => $this->category_id,
+            ':content' => $this->content,
+            ':course_id' => $course_id
+        ]);
+    }
 }
