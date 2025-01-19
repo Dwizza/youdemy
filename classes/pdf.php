@@ -53,4 +53,11 @@ class Pdf extends Course{
             ':course_id' => $course_id
         ]);
     }
+    public function getCourse($course_id){
+        $conn = Database::getConnection();
+        $stmt = $conn->prepare("SELECT * FROM courses WHERE course_id = :course_id");
+        $stmt->execute([':course_id' => $course_id]);
+        $course = $stmt->fetch();
+        return $course;
+    }
 }
