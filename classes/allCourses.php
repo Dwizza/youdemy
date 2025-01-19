@@ -21,4 +21,12 @@ class AllCourses{
         $stmt = $conn->prepare("UPDATE courses SET status = 'active' WHERE course_id = :course_id");
         $stmt->execute([':course_id' => $course_id]);
     }
+    public function studentCourses(){
+        $conn = Database::getConnection();
+        $stmt = $conn->prepare("SELECT * FROM courses 
+                                        join enrollments ON courses.course_id = enrollments.course_id
+                                        join users ON users.user_id = enrollments.student_id
+                                        where enrollments.student_id = users.user_id");
+        $stmt->execute();
+    }
 }

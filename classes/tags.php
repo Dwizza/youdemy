@@ -16,6 +16,8 @@ class Tags{
     }
     public function deleteTag($id){
         $conn = Database::getConnection();
+        $stmt = $conn->prepare("DELETE FROM coursetags WHERE tag_id = :id");
+        $stmt->execute([':id' => $id]);
         $stmt = $conn->prepare("DELETE FROM tags WHERE tag_id = :id");
         $stmt->execute([':id' => $id]);
     }
