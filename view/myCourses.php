@@ -5,14 +5,14 @@ include_once '../classes/studentCourses.php';
         <h2 class="text-2xl md:text-3xl font-bold text-gray-800 mb-6 text-center">Your Courses</h2>
     </div>
     
-<div class="flex gap-3 flex-wrap">
+<div class="grid  md:grid-cols-2 lg:grid-cols-2 gap-3  grid-wrap mx-auto justify-items-center">
     <!-- Courses -->
     <?php 
         $studentCourses = new StudentCourses();
         $courses = $studentCourses->StudentCourses();
         foreach($courses as $course){
     ?>
-    <div class="bg-white w-96 rounded-lg border border-gray-200 shadow-sm overflow-hidden flex">
+    <div class="bg-white w-96 rounded-lg border border-gray-200 shadow-sm overflow-hidden flex ">
         <!-- Image du cours -->
         <img src="<?= $course['thumbnail']?>" alt="Course Image" class="w-48 h-48 object-cover">
 

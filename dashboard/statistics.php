@@ -9,7 +9,14 @@
                 <li>2. Jane Doe</li>
                 <li>3. Alice Smith</li>
             </ul>
-        </div>
+        </div><?php 
+include_once '../config/database.php';
+include_once '../classes/statisticsAdmin.php';
+$allCategories = new StatisticsAdmin;
+
+$categories = $allCategories->CategoryByStudent();
+
+?>
         <div class="bg-gray-100 p-4 rounded-lg">
             <h4 class="text-lg font-bold">Cours avec le plus d'étudiants</h4>
             <p class="text-2xl">Développement Web</p>
@@ -20,14 +27,15 @@
         </div>
     </div>
 </div>
+
 <script>
     const categoryChart = document.getElementById('categoryChart').getContext('2d');
     const myChart = new Chart(categoryChart, {
         type: 'pie',
         data: {
-            labels: ['Développement web', 'Design', 'Business', 'Marketing'],
+            labels: [<?php foreach ($categories as $category){echo "'".$category['name']."',";}?> ],
             datasets: [{
-                data: [2, 0, 1, 3],
+                data: [<?php foreach ($categories as $category){echo "".$category['total'].",";}?>],
                 backgroundColor: ['#3B82F6', '#10B981', '#F59E0B', '#EF4444'],
             }]
         },

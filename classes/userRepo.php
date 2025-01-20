@@ -21,9 +21,7 @@ class UserRepo{
             
             if ($myuser && password_verify($password, $myuser["password_hash"])) {
                 
-                if (session_status() === PHP_SESSION_NONE) {
-                    session_start();
-                }
+                
                 $_SESSION["userid"] = $myuser["user_id"];
                 $_SESSION["userName"] = $myuser["username"];
                 $_SESSION["email"] = $myuser["email"];
@@ -33,14 +31,16 @@ class UserRepo{
                 if ($myuser["role"] == "admin" && $myuser['status']=='active') {
                     header("Location: ../dashboard/index.php");
                 }else if($myuser["role"] == "teacher" && $myuser['status']=='active') {
-                    header("Location: ../viewEnseignant/index.php");
+                    header("Location: ../view/index.php");
                 }else if($myuser["role"] == "teacher" && $myuser['status']=='pending') {
-                    header("Location: ../viewEnseignant/pending.php");
+                    header("Location: ../view/pending.php");
                 }else if($myuser["role"] == "student" && $myuser['status']=='active') {
-                    header("Location: ../viewEnseignant/index.php");
+                    header("Location: ../view/index.php");
                 }else if($myuser['status']=='inactive'){
-                    header("Location: ../viewEnseignant/error.php");
+                    header("Location: ../view/error.php");
                 }
+            }else{
+                echo "<div class='bg-red-500 rounded-md  text-white text-center w-full'>Mot de passe incorrect</div>";
             }
         }catch (PDOException){
             echo "<script>Swal.fire({
@@ -54,7 +54,7 @@ class UserRepo{
     }
     public function logout(){
         session_destroy();
-        header("location:../viewEnseignant/index.php");
+        header("location:../view/index.php");
     }
     public function displayUsers(){
         $conn = Database::getConnection();
@@ -112,8 +112,8 @@ class UserRepo{
             ':course_id' => $course_id,
             ':student_id' => $student_id
         ]);
-        $count = $checkStmt->fetchColumn();
-        return $count;
+       
+        return $checkStmt->fetchColumn();
     }
     public function enrollCourses($count, $course_id, $student_id){
         if ( $count == 0) {
@@ -123,7 +123,7 @@ class UserRepo{
                 ':course_id' => $course_id,
                 ':student_id' => $student_id
             ]);
-            }
+        }
     }
 }
 ?>
