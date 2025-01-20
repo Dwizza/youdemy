@@ -27,9 +27,9 @@
         
         $offset = isset($_GET['offset']) ? (int)$_GET['offset'] : 0;
         $limit = 4; 
-        if(!$_GET['category_id']){
-        $affichage = new AllCourses();
-        $courses = $affichage->displayAllCourses($offset);
+        if(isset($_GET['category_id'])){
+            $affichage = new AllCourses();
+        $courses = $affichage->searchByCategory($_GET['category_id']);
 
         foreach($courses as $course){
             if($course['status'] == 'active'){
@@ -53,9 +53,10 @@
                 echo "</div>";
             }
         }
+        
     }else{
         $affichage = new AllCourses();
-        $courses = $affichage->searchByCategory($_GET['category_id']);
+        $courses = $affichage->displayAllCourses($offset);
 
         foreach($courses as $course){
             if($course['status'] == 'active'){
