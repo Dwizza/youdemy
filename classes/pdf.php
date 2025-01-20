@@ -27,7 +27,7 @@ class Pdf extends Course{
     
     public function displayCourses($course_id){
         $conn = Database::getConnection();
-        $stmt = $conn->prepare("SELECT users.username, c.`course_id`, c.title, c.description, c.content, c.teacher_id, c.category_id,c.created_at, c.thumbnail, c.type, c.status ,
+        $stmt = $conn->prepare("SELECT users.username, c.`course_id`, c.title, c.description, c.content, c.teacher_id, c.category_id, c.updated_at, c.created_at, c.thumbnail, c.type, c.status ,
                 GROUP_CONCAT(t.name ORDER BY t.name) AS tags, c.type, 
                 cat.name  AS category
                 FROM courses c
@@ -41,7 +41,7 @@ class Pdf extends Course{
         $course = $stmt->fetch();
         return $course;
     }
-    public function editCourse($course_id) {
+    public function editCourse($course_id, $tags) {
         $conn = Database::getConnection();
         $stmt = $conn->prepare("UPDATE courses SET title = :title, description = :description, thumbnail = :thumbnail, category_id = :category_id, content = :content WHERE course_id = :course_id");
         $stmt->execute([
@@ -52,6 +52,12 @@ class Pdf extends Course{
             ':content' => $this->content,
             ':course_id' => $course_id
         ]);
+        $stmt = $conn->prepare("DELETE FROM coursetags WHERE course_id = :course_id");
+        $stmt->execute([':course_id' => $course_id]);
+        foreach($tags as $tag){
+            $stmt = $conn->prepare("insert into coursetags (course_id, tag_id) values (:course_id, :tag_id )");
+            $stmt->execute([':course_id' => $course_id, ':tag_id' => $tag]);
+        }
     }
     public function getCourse($course_id){
         $conn = Database::getConnection();

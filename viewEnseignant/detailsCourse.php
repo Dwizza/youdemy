@@ -66,6 +66,10 @@ if (isset($_GET['course_id']) && isset($_GET['type'])) {
                             class="text-blue-500"><?= $courses['created_at'] ?></span></p>
                 </div>
                 <div class="mb-6">
+                    <p class="text-gray-700 font-semibold mb-2">Updated at : <span
+                            class="text-blue-500"><?= $courses['updated_at'] ?></span></p>
+                </div>
+                <div class="mb-6">
                     <p class="text-gray-700 font-semibold mb-2">Desccription : <span
                             class="text-blue-500"><?= $courses['description'] ?></span></p>
                 </div>

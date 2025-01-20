@@ -25,9 +25,9 @@
     const myChart = new Chart(categoryChart, {
         type: 'pie',
         data: {
-            labels: ['Développement', 'Design', 'Business', 'Marketing'],
+            labels: ['Développement web', 'Design', 'Business', 'Marketing'],
             datasets: [{
-                data: [30, 20, 15, 35],
+                data: [2, 0, 1, 3],
                 backgroundColor: ['#3B82F6', '#10B981', '#F59E0B', '#EF4444'],
             }]
         },

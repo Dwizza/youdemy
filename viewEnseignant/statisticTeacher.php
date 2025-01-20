@@ -2,6 +2,12 @@
 include_once 'header.php';
 include_once '../config/database.php';
 include_once '../classes/statisticsTeacher.php';
+include_once '../classes/video.php';
+if(isset($_GET['course_id'])){
+    $deleted = new Video();
+    $deleted->deleteCourse($_GET['course_id']);
+    header('Location: statisticteacher.php');
+}
 ?>
 <div class="container mx-auto p-8">
         <h1 class="text-3xl font-bold text-center mb-8">Statistiques des Cours</h1>
@@ -40,6 +46,31 @@ include_once '../classes/statisticsTeacher.php';
 
         <!-- Tableau des cours populaires -->
         <div class="mt-12 bg-white rounded-lg shadow-lg p-6">
+            <h2 class="text-2xl font-bold mb-4">L'inscription dans les cours </h2>
+            <table class="w-full text-left">
+                <thead>
+                    <tr class='border-b text-center'>
+                        <th class="py-2">Nom du Cours</th>
+                        <th class="py-2">Etudiant s'inscrit</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php 
+                    $affichage = new StatisticsTeacher();
+                    $courses = $affichage->myCoursesEnrolled();
+                    foreach($courses as $course){
+                        echo "<tr class='border-b text-center'>";
+                            echo  "<td class='p-3'>".$course['title']."</td>";;
+                            echo  "<td class='p-1'>".$course['enrollment_count']."</td>";
+                        echo "</tr>";
+                    }
+                    ?>
+                    
+                </tbody>
+            </table>
+        </div>
+        <div class="mt-12 bg-white rounded-lg shadow-lg p-6">
             <h2 class="text-2xl font-bold mb-4">Les cours </h2>
             <table class="w-full text-left">
                 <thead>
@@ -47,7 +78,6 @@ include_once '../classes/statisticsTeacher.php';
                         <th class="py-2">Nom du Cours</th>
                         <th class="py-2">contenu du cours</th>
                         <th class="py-2">Status du cours</th>
-                        <th class="py-2">Etudiant s'inscrit</th>
                         <th class="py-2">Action</th>
 
                     </tr>
@@ -61,7 +91,6 @@ include_once '../classes/statisticsTeacher.php';
                             echo  "<td class='p-3'>".$course['title']."</td>";
                             echo  "<td class='p-1'><a href='detailsCourse.php?course_id=".$course['course_id']."&type=".$course['type']."&user_id=".$course['teacher_id']."' class='bg-green-500 px-4 py-2 rounded-lg hover:bg-green-800 text-white text-md font-medium'>Content link</a></td>";
                             echo  "<td class='p-1'>".$course['status']."</td>";
-                            echo  "<td class='p-1'>".$course['enrollment_count']."</td>";
                             echo  "<td class='p-1'>
                                         <a href='addcourse.php?course_id=".$course['course_id']."' class='text-green-400 hover:text-green-600 px-2'><i class='fa-solid fa-pen-to-square'></i></a>
                                         <a href='statisticteacher.php?course_id=".$course['course_id']."' class='text-red-400 hover:text-red-600 px-2'><i class='fa-solid fa-trash'></i></a>

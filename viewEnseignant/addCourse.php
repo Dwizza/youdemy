@@ -20,15 +20,41 @@ if(isset($_POST['submit'])){
         $course->addCourse($tags);
     }
 }
+if(isset($_POST['update'])) {
+    $title = $_POST['title'];
+    $description = $_POST['content'];
+    $thumbnail = $_POST['thumbnail'];
+    $category = $_POST['category'];
+    $teacherId = $_SESSION["userid"];
+    if($_POST['fileType'] == 'pdf'){
+        $pdfUrl = $_POST['pdfUrl'];
+        $course = new pdf($title, $description,  $thumbnail, $category, $_SESSION['userid'], $pdfUrl);
+        $tags = 
+        $_POST['tags'];
+        $course->editCourse($_GET['course_id'], $tags);
+        header('Location: statisticteacher.php');
+    }else{
+        $videoUrl = $_POST['videoUrl'];
+        $course = new video($title, $description,  $thumbnail, $category, $_SESSION['userid'], $videoUrl);
+        $tags = $_POST['tags'];
+        $course->editCourse($_GET['course_id'], $tags);
+        header('Location: statisticteacher.php');
+    }
+
+}
 ?>
-<?php if(isset($_GET['course_id'])){?>
+<?php if(isset($_GET['course_id'])){
+    $getCourse = new Pdf($_GET['course_id']);
+    $courseData = $getCourse->getCourse($_GET['course_id']);
+    print_r($courseData);
+    ?>
 <div class="container mx-auto p-4">
     <h1 class="text-3xl font-bold text-center mb-8" style="color: #059669;">Ajouter un Nouveau Cours</h1>
     <form class="bg-white p-6 rounded-lg shadow-md" method="post">
         <!-- Titre du cours -->
         <div class="mb-4">
             <label for="title" class="block text-gray-700 font-bold mb-2">Titre du Cours</label>
-            <input type="text" id="title" name="title" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" placeholder="Entrez le titre du cours" required>
+            <input type="text" id="title" name="title" value="<?= $courseData['title']?>" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" placeholder="Entrez le titre du cours" required>
         </div>
 
         <!-- Description du cours (textarea simple) -->
@@ -40,48 +66,58 @@ if(isset($_POST['submit'])){
                     rows="4"
                     class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                     placeholder="Write something..."
-                ></textarea>
+                ><?= $courseData['description']?></textarea>
             </div>
 
 <!-- Sélectionner le type de fichier -->
+ <?php if($courseData['type']=='pdf'){?>
             <div class="mb-4">
                 <label for="fileType" class="block text-gray-700 font-bold mb-2">Type de Fichier</label>
                 <select name="fileType" id="fileType" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" onchange="toggleFileInput()">
                     <option value="" selected>Choisir votre type de fichier</option>
-                    <option value="pdf">PDF</option>
+                    <option value="pdf" selected>PDF</option>
                     <option value="video">Vidéo</option>
                 </select>
             </div>
-
-            <!-- Champ pour l'URL du PDF (affiché par défaut) -->
-            <div class="mb-4 hidden" id="pdfInput">
+                <!-- Champ pour l'URL du PDF (affiché par défaut) -->
+            <div class="mb-4" id="pdfInput">
                 <label for="pdfUrl" class="block text-gray-700 font-bold mb-2">URL du PDF</label>
-                <input type="url" id="pdfUrl" name="pdfUrl" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" placeholder="Entrez l'URL du PDF">
+                <input type="url" id="pdfUrl" value="<?= $courseData['content']?>" name="pdfUrl" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" placeholder="Entrez l'URL du PDF">
             </div>
-
+            <?php }else{?>
+                <div class="mb-4">
+                <label for="fileType" class="block text-gray-700 font-bold mb-2">Type de Fichier</label>
+                <select name="fileType" id="fileType" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" onchange="toggleFileInput()">
+                    <option value="" selected>Choisir votre type de fichier</option>
+                    <option value="pdf" selected>PDF</option>
+                    <option value="video" selected>Vidéo</option>
+                </select>
+            </div>
             <!-- Champ pour l'URL de la vidéo (caché par défaut) -->
-            <div class="mb-4 hidden" id="videoInput">
+            <div class="mb-4" id="videoInput">
                 <label for="videoUrl" class="block text-gray-700 font-bold mb-2">URL de la Vidéo</label>
-                <input type="url" id="videoUrl" name="videoUrl" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" placeholder="Entrez l'URL de la vidéo">
+                <input type="url" id="videoUrl" value="<?= $courseData['content']?>" name="videoUrl" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" placeholder="Entrez l'URL de la vidéo">
             </div>
-
+            <?php }?>
 <!-- ajouter thumbnail -->
-
-        
         <div class="mb-4" id="thumbnail">
                 <label for="thumbnail" class="block text-gray-700 font-bold mb-2">URL du thumbnail</label>
-                <input type="url" id="thumbnail" name="thumbnail" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" placeholder="Entrez l'URL du thumbnail">
+                <input type="url" value="<?= $courseData['thumbnail']?>" id="thumbnail" name="thumbnail" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" placeholder="Entrez l'URL du thumbnail">
         </div>
 
         <!-- Catégorie du cours -->
         <div class="mb-4">
             <label for="category" class="block text-gray-700 font-bold mb-2">Catégorie</label>
             <select id="category" name="category" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" required>
+                <option value="">Choisir categorie</option>
                 <?php 
                 include_once '../classes/category.php';
                 $categorie = new category;
                 $categories = $categorie->displayCategories();
                 foreach($categories as $category){
+                    if( $courseData['category_id']){
+                        echo "<option value='".$category['category_id']."' selected>".$category['name']."</option>";
+                    }
                     echo "<option value='".$category['category_id']."'>".$category['name']."</option>";
                 }
                 ?>
@@ -108,7 +144,7 @@ if(isset($_POST['submit'])){
 
         <!-- Bouton de soumission -->
         <div class="text-center">
-            <button type="submit" name="submit" class="bg-green-500 text-white px-6 py-2 rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-[#059669]">
+            <button type="submit" name="update" class="bg-green-500 text-white px-6 py-2 rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-[#059669]">
                 Ajouter le Cours
             </button>
         </div>

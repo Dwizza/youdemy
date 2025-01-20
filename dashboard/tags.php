@@ -69,10 +69,6 @@
         <div class="mb-4">
             <!-- Liste des Tags -->
             <div class="flex flex-wrap gap-2">
-                <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">HTML</span>
-                <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm">CSS</span>
-                <span class="bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-sm">JavaScript</span>
-                <span class="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-sm">React</span>
                 <?php
                 include_once '../classes/tags.php'; 
                 $affiche = new Tags();
