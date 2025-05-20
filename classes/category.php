@@ -13,8 +13,8 @@ class Category{
         $stmt->execute();
         $categories = $stmt->fetchAll();
         return $categories;
-        
     }
+    
     public function modifyCategory($id, $category){
         $conn = Database::getConnection();
         $stmt = $conn->prepare("UPDATE categories SET name = :name WHERE category_id = :id");
